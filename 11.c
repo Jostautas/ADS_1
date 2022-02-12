@@ -14,18 +14,33 @@ void print_interface(){
     printf("4 To push (integer)\n");
     printf("5 To pop\n");
     printf("6 To display\n");
-    printf("7 To clear\n");
+}
+
+void deleteStack(){
+    if(Top != NULL){
+        while(Top != NULL){
+            Temp = Top;
+            Top = Top->ptr;
+            free(Temp);
+        }
+    }
+    else{
+        printf("The stack is already empty\n");
+    }
 }
 
 void createStack(){
-    if(Top != NULL){
+    if(Top != NULL){    // if there are saved elements inside the stack
         printf("The stack is not empty, do you want to delete it? Press Y/N\n");
         char ch;
-        if(scanf("%c", &ch) == 1){
+        if((scanf("%c", &ch) == 1) && (getchar() == '\n')){
             ch = tolower(ch);
             switch(ch){
                 case 'y':
-                    printf("Deleting\n");
+                    deleteStack();
+                    if(Top == NULL){
+                        printf("Stack deleted successfully\n");
+                    }
                     break;
                 case 'n':
                     printf("The stack was not changed\n");
@@ -43,14 +58,30 @@ void createStack(){
     }
 }
 
-void checkIfEmpty(){
-    
+void checkIfEmpty(){        // if the top element does not exist, the stack is empty
+    if(Top == NULL){
+        printf("The stack is empty\n");
+    }
+    else{
+        printf("The stack is not empty\n");
+    }
+}
+
+void checkIfFull(){         // tries to allocate memory for an element - if it is allocated successfully, the stack is not full.
+    Temp = (struct stack *) malloc(sizeof(struct stack));
+    if(Temp == NULL){
+        printf("The stack is full\n");
+    }
+    else{
+        printf("The stack is not full\n");
+    }
+    free(Temp);
 }
 
 void push(){
     printf("Enter an integer\n");
     int input;
-    if(scanf("%d", &input) == 1){
+    if((scanf("%d", &input) && (getchar() == '\n')) == 1){
         if(Top == NULL){
             Top = (struct stack *) malloc(sizeof(struct stack));
             Top->data = input;
@@ -65,6 +96,19 @@ void push(){
     }
 }
 
+int pop(){
+    if (Top != NULL){
+        int x = Top->data;
+        Temp = Top;
+        Top = Top->ptr;
+        free(Temp);
+        return x;
+    }
+    else{
+        printf("The stack is empty, nothing to pop\n");
+    }
+}
+
 void display(){
     printf("The stack from top to bottom is:");
     if(Top != NULL){
@@ -76,19 +120,19 @@ void display(){
         printf("\n");
     }
     else{
-        printf("The stack is empty");
+        printf(" The stack is empty\n");
     }
     
 }
 
 int main(){
-    int ch, x;
+    int ch, popped; // user choice, most recently popped value from stack
 
     printf("Press a coressponding number to interact with stack:\n");
 
     while(1){
         print_interface();
-        if(scanf("%d", &ch) == 1){
+        if((scanf("%d", &ch) && (getchar() == '\n')) == 1){
             switch(ch){
                 case 1:
                     createStack();
@@ -96,8 +140,14 @@ int main(){
                 case 2:
                     checkIfEmpty();
                     break;
+                case 3:
+                    checkIfFull();
+                    break;
                 case 4:
                     push();
+                    break;
+                case 5:
+                    popped = pop();
                     break;
                 case 6:
                     display();
