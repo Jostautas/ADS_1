@@ -15,9 +15,10 @@ void printInterface(){
     printf("4 To push (integer)\n");
     printf("5 To pop\n");
     printf("6 To display\n");
+    printf("7 To show how many elements there is in the stack\n");
 }
 
-void deleteStack(){
+void deleteStack(){     // deletes tack form top to bottom
     if(Top != NULL){
         while(Top != NULL){
             Temp = Top;
@@ -83,12 +84,12 @@ void push(){
     printf("Enter an integer\n");
     int input;
     if((scanf("%d", &input) && (getchar() == '\n')) == 1){
-        if(Top == NULL){
+        if(Top == NULL){    // if stack is empty, create first element
             Top = (struct stack *) malloc(sizeof(struct stack));
             Top->data = input;
             Top->ptr = NULL;
         }
-        else{
+        else{               // if stack is not empty
             Temp = (struct stack *) malloc(sizeof(struct stack));
             Temp->data = input;
             Temp->ptr = Top;
@@ -98,16 +99,18 @@ void push(){
 }
 
 int pop(){
-    if (Top != NULL){
-        int x = Top->data;
+    int x = 0;
+    if (Top != NULL){   // if stack is not empty, take the top value and delete it from stack
+        x = Top->data;
         Temp = Top;
         Top = Top->ptr;
         free(Temp);
-        return x;
+        printf("Popped value is %d\n", x);
     }
     else{
         printf("The stack is empty, nothing to pop\n");
     }
+    return x;
 }
 
 void display(){
@@ -124,4 +127,20 @@ void display(){
         printf(" The stack is empty\n");
     }
     
+}
+
+void howMany(){
+    if(Top == NULL){
+        printf("There are 0 elements in the stack\n");
+    }
+    else{
+        int n = 0;
+        Temp = Top;
+        while(Temp != NULL){
+            ++n;
+            Temp = Temp->ptr;
+        }
+        printf("There are %d elements in the stack\n", n);
+
+    }
 }

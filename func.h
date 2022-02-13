@@ -11,5 +11,6 @@ void checkIfFull();
 void push();
 int pop();
 void display();
+void howMany();
 
 #endif

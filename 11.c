@@ -30,13 +30,16 @@ int main(){
                 case 6:
                     display();
                     break;
+                case 7:
+                    howMany();
+                    break;
                 default:
                     printf("Enter a correct number\n");
             }
         }
         else{
-            printf("ERROR1\n");
-            return 0;
+            printf("Enter a correct number\n");
+            while(getchar() != '\n');
         }
         
     }
