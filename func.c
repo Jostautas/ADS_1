@@ -6,23 +6,30 @@
 struct stack{
     int data;
     struct stack *ptr;
-} *Top, *Temp;
+} *Top[3], *Temp;
 
-void printInterface(){
-    printf("1 To create an empty stack / clear stack\n");
-    printf("2 To cheack if stack is empty\n");
-    printf("3 To check if stack is full\n");
-    printf("4 To push (integer)\n");
-    printf("5 To pop\n");
-    printf("6 To display\n");
-    printf("7 To show how many elements there is in the stack\n");
+void printInterface(int i){
+    printf("This Is a program for creating and manipulating a stack of integers\n");
+    printf("Press a coressponding number to interact with stack:\n");
+
+    printf("0 - Create an empty stack / clear stack\n");
+    printf("1 - Check if stack is empty\n");
+    printf("2 - Check if stack is full\n");
+    printf("3 - Push\n");
+    printf("4 - Pop\n");
+    printf("5 - Display\n");
+    printf("6 - Show how many elements there is in the stack\n");
+    printf("7 - Switch to stack 1\n");
+    printf("8 - Switch to stack 2\n");
+    printf("9 - Switch to stack 3\n");
+    printf("10 - Help\n");
 }
 
-void deleteStack(){     // deletes tack form top to bottom
-    if(Top != NULL){
-        while(Top != NULL){
-            Temp = Top;
-            Top = Top->ptr;
+void deleteStack(int i){     // deletes stack form top to bottom
+    if(Top[i] != NULL){
+        while(Top[i] != NULL){
+            Temp = Top[i];
+            Top[i] = Top[i]->ptr;
             free(Temp);
         }
     }
@@ -31,16 +38,16 @@ void deleteStack(){     // deletes tack form top to bottom
     }
 }
 
-void createStack(){
-    if(Top != NULL){    // if there are saved elements inside the stack
+void createStack(int i){
+    if(Top[i] != NULL){    // if there are saved elements inside the stack
         printf("The stack is not empty, do you want to delete it? Press Y/N\n");
         char ch;
         if((scanf("%c", &ch) == 1) && (getchar() == '\n')){
             ch = tolower(ch);
             switch(ch){
                 case 'y':
-                    deleteStack();
-                    if(Top == NULL){
+                    deleteStack(i);
+                    if(Top[i] == NULL){
                         printf("Stack deleted successfully\n");
                     }
                     break;
@@ -60,8 +67,8 @@ void createStack(){
     }
 }
 
-void checkIfEmpty(){        // if the top element does not exist, the stack is empty
-    if(Top == NULL){
+void checkIfEmpty(int i){        // if the top element does not exist, the stack is empty
+    if(Top[i] == NULL){
         printf("The stack is empty\n");
     }
     else{
@@ -69,7 +76,7 @@ void checkIfEmpty(){        // if the top element does not exist, the stack is e
     }
 }
 
-void checkIfFull(){         // tries to allocate memory for an element - if it is allocated successfully, the stack is not full.
+void checkIfFull(int i){         // tries to allocate memory for an element - if it is allocated successfully, the stack is not full.
     Temp = (struct stack *) malloc(sizeof(struct stack));
     if(Temp == NULL){
         printf("The stack is full\n");
@@ -80,30 +87,30 @@ void checkIfFull(){         // tries to allocate memory for an element - if it i
     free(Temp);
 }
 
-void push(){
+void push(int i){
     printf("Enter an integer\n");
     int input;
-    if((scanf("%d", &input) && (getchar() == '\n')) == 1){
-        if(Top == NULL){    // if stack is empty, create first element
-            Top = (struct stack *) malloc(sizeof(struct stack));
-            Top->data = input;
-            Top->ptr = NULL;
+    if((scanf("%d", &input) == 1) && (getchar() == '\n')){
+        if(Top[i] == NULL){    // if stack is empty, create first element
+            Top[i] = (struct stack *) malloc(sizeof(struct stack));
+            Top[i]->data = input;
+            Top[i]->ptr = NULL;
         }
         else{               // if stack is not empty
             Temp = (struct stack *) malloc(sizeof(struct stack));
             Temp->data = input;
-            Temp->ptr = Top;
-            Top = Temp;
+            Temp->ptr = Top[i];
+            Top[i] = Temp;
         }
     }
 }
 
-int pop(){
+int pop(int i){
     int x = 0;
-    if (Top != NULL){   // if stack is not empty, take the top value and delete it from stack
-        x = Top->data;
-        Temp = Top;
-        Top = Top->ptr;
+    if (Top[i] != NULL){   // if stack is not empty, take the  value and delete it from stack
+        x = Top[i]->data;
+        Temp = Top[i];
+        Top[i] = Top[i]->ptr;
         free(Temp);
         printf("Popped value is %d\n", x);
     }
@@ -113,10 +120,10 @@ int pop(){
     return x;
 }
 
-void display(){
+void display(int i){
     printf("The stack from top to bottom is:");
-    if(Top != NULL){
-        Temp = Top;
+    if(Top[i] != NULL){
+        Temp = Top[i];
         while(Temp != NULL){
             printf(" %d", Temp->data);
             Temp = Temp->ptr;
@@ -129,13 +136,13 @@ void display(){
     
 }
 
-void howMany(){
-    if(Top == NULL){
+void howMany(int i){
+    if(Top[i] == NULL){
         printf("There are 0 elements in the stack\n");
     }
     else{
         int n = 0;
-        Temp = Top;
+        Temp = Top[i];
         while(Temp != NULL){
             ++n;
             Temp = Temp->ptr;

@@ -4,13 +4,13 @@
 struct stack;
 
 void printInterface();
-void deleteStack();
-void createStack();
-void checkIfEmpty();
-void checkIfFull();
-void push();
-int pop();
-void display();
-void howMany();
+void deleteStack(int i);
+void createStack(int i);
+void checkIfEmpty(int i);
+void checkIfFull(int i);
+void push(int i);
+int pop(int i);
+void display(int i);
+void howMany(int i);
 
 #endif
